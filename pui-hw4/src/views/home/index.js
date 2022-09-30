@@ -6,10 +6,39 @@ import raisin from './assets/raisin-cinnamon-roll.jpg';
 import walnut from './assets/walnut-cinnamon-roll.jpg';
 import chocolate from './assets/double-chocolate-cinnamon-roll.jpg';
 import strawberry from './assets/strawberry-cinnamon-roll.jpg';
-import Product from './Product.js'
-import Navigation from './Navigation.js'
+import Product from './Product.js';
+import Navigation from './Navigation.js';
+import React, { useRef } from 'react';
 
 function Home() {
+
+    const pTagRef = useRef();
+
+    const [cart, setCart] = React.useState([]);
+
+    const [cartPrice, setCartPrice] = React.useState(0);
+
+    const [cartNum, setCartNum] = React.useState(0);
+
+    const addToCart = (type, glaze, size, price) => {
+        const newCart = cart.concat({ type, glaze, size, price});
+        setCart(newCart);
+        setCartPrice(Number(cartPrice) + Number(price));
+        setCartNum(cartNum + 1);
+        console.log(newCart);
+        var text = "Added to cart:\n\n";
+        text += (type + " cinnamon roll\n");
+        text += (glaze + " glazing\n");
+        text += ("Pack of " + size + "\n");
+        text += ("Price: $" + price + "\n\n");
+        pTagRef.current.innerText = text;
+        console.log(text);
+        setTimeout(function () {
+            text = (cartNum + 1) + " item\nTotal: $ " + (Number(cartPrice) + Number(price));
+            pTagRef.current.innerText = text;
+        }, 3000);
+    }
+
     return (
         <>
           <meta charSet="UTF-8" />
@@ -25,7 +54,15 @@ function Home() {
               />
             </div>
             <div id="top-bar-right">
-              <Navigation />
+              <nav>
+                <button id="products">PRODUCTS</button>
+                <div class="dropdown">
+                  <button class="dropbtn">CART</button>
+                  <div class="dropdown-content">
+                    <p ref={pTagRef} id="cart-dropdown"></p>
+                  </div>
+                </div>
+              </nav>
               <hr />
               <h1>Our hand-made cinnamon rolls</h1>
             </div>
@@ -37,60 +74,48 @@ function Home() {
                 imageURL={original}
                 title="Original cinnamon roll"
                 type="original"
-                packOne="1-or"
-                packThree="3-or"
-                packSix="6-or"
-                packTwelve="12-or"
+                typePrice="2.49"
+                addToCart={addToCart}
             />
             {/*Apple Cinnamon Roll*/}
             <Product
                 imageURL={apple}
                 title="Apple cinnamon roll"
                 type="apple"
-                packOne="1-ap"
-                packThree="3-ap"
-                packSix="6-ap"
-                packTwelve="12-ap"
+                typePrice="3.49"
+                addToCart={addToCart}
             />
             {/*Raisin Cinnamon Roll*/}
             <Product
                 imageURL={raisin}
                 title="Raisin cinnamon roll"
                 type="raisin"
-                packOne="1-ra"
-                packThree="3-ra"
-                packSix="6-ra"
-                packTwelve="12-ra"
+                typePrice="2.99"
+                addToCart={addToCart}
             />
             {/*Walnut Cinnamon Roll*/}
             <Product
                 imageURL={walnut}
                 title="Walnut cinnamon roll"
                 type="walnut"
-                packOne="1-wa"
-                packThree="3-wa"
-                packSix="6-wa"
-                packTwelve="12-wa"
+                typePrice="3.49"
+                addToCart={addToCart}
             />
             {/*Double Chocolate Cinnamon Roll*/}
             <Product
                 imageURL={chocolate}
                 title="Double-chocolate cinnamon roll"
                 type="chocolate"
-                packOne="1-ch"
-                packThree="3-ch"
-                packSix="6-ch"
-                packTwelve="12-ch"
+                typePrice="3.99"
+                addToCart={addToCart}
             />
             {/*Strawberry Cinnamon Roll*/}
             <Product
                 imageURL={strawberry}
                 title="Strawberry cinnamon roll"
                 type="strawberry"
-                packOne="1-st"
-                packThree="3-st"
-                packSix="6-st"
-                packTwelve="12-st"
+                typePrice="3.99"
+                addToCart={addToCart}
             />
           </div>
         </>
